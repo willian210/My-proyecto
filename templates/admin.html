@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Flashop - Administrador</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+
+        <h1>Flashop Admin 🛠️</h1>
+
+    </div>
+
+    <button
+        type="button"
+        onclick="salirAdmin()">
+
+        🚪 Salir
+
+    </button>
+
+</header>
+
+
+<main class="admin-container">
+
+    <h2>
+        Panel de administración
+    </h2>
+
+
+    <div class="admin-grid">
+
+        <button
+            onclick="cargarProductosAdmin()">
+
+            📦 Productos
+
+        </button>
+
+
+        <button
+            onclick="cargarClientesAdmin()">
+
+            👥 Clientes
+
+        </button>
+
+
+        <button
+            onclick="cargarPedidosAdmin()">
+
+            🛒 Pedidos
+
+        </button>
+
+
+        <button
+            onclick="cargarPagosAdmin()">
+
+            💳 Pagos
+
+        </button>
+
+
+        <button
+            onclick="cargarStockAdmin()">
+
+            📊 Stock
+
+        </button>
+
+    </div>
+
+
+    <section
+        id="adminContenido"
+        class="admin-contenido">
+
+        <h2>
+            Selecciona una opción
+        </h2>
+
+    </section>
+
+</main>
+
+
+<script
+    src="{{ url_for('static', filename='js/admin.js') }}">
+
+</script>
+
+</body>
+
+</html>

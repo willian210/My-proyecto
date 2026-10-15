@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Flashop - Tienda Online</title>
+
+   <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="header">
+
+    <div class="logo">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <h1>Flashop</h1>
+    </div>
+
+    <nav class="nav">
+        <a href="#" onclick="mostrarTodos(); return false;">
+            Inicio
+        </a>
+
+        <a href="#categorias">
+            Categorías
+        </a>
+
+        <a href="#productos-section">
+            Productos
+        </a>
+    </nav>
+
+    <!-- BUSCADOR -->
+
+    <div class="search">
+
+        <input
+            type="text"
+            id="buscador"
+            placeholder="Buscar productos..."
+            autocomplete="off"
+        >
+
+        <i class="fa-solid fa-magnifying-glass"></i>
+
+    </div>
+
+    <!-- ================= ICONOS DEL ENCABEZADO ================= -->
+
+<div class="icons">
+
+    <!-- 🌙 BOTÓN DE MODO OSCURO -->
+    <button
+        type="button"
+        class="dark-btn"
+        onclick="toggleDarkMode()"
+        title="Activar o desactivar modo oscuro"
+        aria-label="Modo oscuro">
+
+        🌙
+
+    </button>
+
+
+   <!-- BOTÓN DE ADMINISTRADOR -->
+
+
+    <!-- 👤 BOTÓN DE USUARIO -->
+    <button
+        type="button"
+        class="user-btn"
+        id="icon-user"
+        onclick="abrirPerfilOLogin()"
+        title="Iniciar sesión"
+        aria-label="Abrir perfil de usuario">
+
+        👤
+
+    </button>
+
+
+    <!-- 🛒 BOTÓN DEL CARRITO -->
+    <button
+        type="button"
+        class="cart-icon"
+        onclick="toggleCart()"
+        title="Abrir carrito de compras"
+        aria-label="Abrir carrito">
+
+        🛒
+
+        <!-- CONTADOR DE PRODUCTOS -->
+        <span id="contador">0</span>
+
+    </button>
+
+</div>
+
+<!-- ================= FIN DE LOS ICONOS ================= -->
+
+</header>
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div
+        class="hero-slide active"
+        style="background-image: url('{{ url_for('static', filename='img/car2.jpg') }}');">
+
+        <div class="hero-content">
+            <h2>Bienvenido a Flashop</h2>
+            <p>Las mejores ofertas online</p>
+            <button type="button" onclick="scrollProductos()">
+                Comprar ahora
+            </button>
+        </div>
+
+    </div>
+
+    <div
+        class="hero-slide"
+        style="background-image: url('{{ url_for('static', filename='img/banner2.jpg') }}');">
+
+        <div class="hero-content">
+            <h2>Moda y Tecnología</h2>
+            <p>Productos increíbles para ti</p>
+            <button type="button" onclick="scrollProductos()">
+                Ver productos
+            </button>
+        </div>
+
+    </div>
+
+    <div
+        class="hero-slide"
+        style="background-image: url('{{ url_for('static', filename='img/banner3.jpg') }}');">
+
+        <div class="hero-content">
+            <h2>Envíos rápidos</h2>
+            <p>Compra fácil y segura</p>
+            <button type="button" onclick="scrollProductos()">
+                Explorar
+            </button>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CATEGORÍAS
+========================= -->
+
+<section
+    id="categorias"
+    class="categorias">
+
+    <h2>
+        Categorías
+    </h2>
+
+    <div class="grid-categorias">
+
+        <div
+            class="categoria"
+            onclick="filtrar('ropa')">
+
+            👕 Ropa
+
+        </div>
+
+
+        <div
+            class="categoria"
+            onclick="filtrar('calzado')">
+
+            👟 Calzado
+
+        </div>
+
+
+        <div
+            class="categoria"
+            onclick="filtrar('electronica')">
+
+            📱 Electrónica
+
+        </div>
+
+
+        <div
+            class="categoria"
+            onclick="filtrar('accesorios')">
+
+            🎒 Accesorios
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     PRODUCTOS
+========================= -->
+
+<main
+    id="productos-section"
+    class="productos-section">
+
+    <h2>
+        Productos disponibles
+    </h2>
+
+    <div
+        class="products"
+        id="productos">
+
+    </div>
+
+</main>
+
+
+<!-- =========================
+     CARRITO
+========================= -->
+
+<aside
+    id="carrito"
+    class="cart">
+
+    <div class="cart-header">
+
+        <h2>
+            Tu carrito 🛒
+        </h2>
+
+        <button
+            type="button"
+            onclick="toggleCart()">
+
+            ✖
+
+        </button>
+
+    </div>
+
+
+    <!-- PRODUCTOS DEL CARRITO -->
+
+    <div
+        id="lista"
+        class="cart-list">
+
+    </div>
+
+
+    <!-- TOTAL -->
+
+    <div class="cart-footer">
+
+        <h3>
+
+            Total:
+
+            $<span id="total">
+                0
+            </span>
+
+        </h3>
+
+
+        <!-- FINALIZAR COMPRA -->
+
+        <button
+            type="button"
+            class="btn-buy"
+            onclick="abrirPago()">
+
+            Finalizar compra
+
+        </button>
+
+
+        <!-- VACIAR -->
+
+        <button
+            type="button"
+            class="btn-clear"
+            onclick="vaciarCarrito()">
+
+            Vaciar carrito
+
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- =========================
+     OVERLAY
+========================= -->
+
+<div
+    id="overlay"
+    class="cart-overlay"
+    onclick="toggleCart()">
+
+</div>
+
+
+<!-- =========================
+     MODAL DE PAGO
+========================= -->
+
+<div
+    id="pago"
+    class="modal hidden">
+
+    <div class="modal-content">
+
+        <h2>
+            Datos de compra 💳
+        </h2>
+
+
+        <p class="pago-info">
+            Pago simulado - Proyecto académico SENA
+        </p>
+
+
+        <!-- NOMBRE -->
+
+        <input
+            type="text"
+            id="nombrePago"
+            placeholder="Nombre completo"
+            autocomplete="name"
+        >
+
+
+        <!-- MÉTODO -->
+
+        <select id="metodoPago">
+
+            <option value="">
+                Selecciona método de pago
+            </option>
+
+            <option value="Tarjeta">
+                Tarjeta
+            </option>
+
+            <option value="Nequi">
+                Nequi
+            </option>
+
+            <option value="Daviplata">
+                Daviplata
+            </option>
+
+            <option value="Efectivo">
+                Efectivo
+            </option>
+
+        </select>
+
+
+        <!-- NÚMERO DE PRUEBA -->
+
+        <input
+            type="text"
+            id="numeroTarjeta"
+            placeholder="Número de prueba"
+            autocomplete="off"
+        >
+
+
+        <!-- CONFIRMAR -->
+
+        <button
+            type="button"
+            onclick="confirmarPago()">
+
+            Confirmar pago
+
+        </button>
+
+
+        <!-- CANCELAR -->
+
+        <button
+            type="button"
+            onclick="cerrarPago()">
+
+            Cancelar
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     FACTURA
+========================= -->
+
+<div id="factura" class="modal hidden">
+    <div class="modal-content">
+
+        <h2>Factura Flashop 🧾</h2>
+
+        <div id="factura-detalle"></div>
+
+        <p>
+            <strong>
+                Total: $<span id="factura-total">0</span>
+            </strong>
+        </p>
+
+        <button
+            type="button"
+            onclick="imprimirFactura()">
+            🖨️ Imprimir factura
+        </button>
+
+        <button
+            type="button"
+            onclick="cerrarFactura()">
+            Cerrar
+        </button>
+
+    </div>
+</div>
+
+<!-- =========================
+     LOGIN
+========================= -->
+
+<div
+    id="login"
+    class="modal hidden"
+    onclick="cerrarLogin()">
+
+    <div
+        class="modal-content"
+        onclick="event.stopPropagation()">
+
+        <!-- LOGIN -->
+
+        <div id="loginForm">
+
+            <h2>
+                Iniciar Sesión
+            </h2>
+
+
+            <input
+                type="text"
+                id="loginUser"
+                placeholder="Correo electrónico"
+                autocomplete="username"
+            >
+
+
+            <input
+                type="password"
+                id="loginPass"
+                placeholder="Contraseña"
+                autocomplete="current-password"
+            >
+
+
+            <button
+                type="button"
+                onclick="login()">
+
+                Ingresar
+
+            </button>
+
+
+            <p>
+                ¿No tienes cuenta?
+            </p>
+
+
+            <button
+                type="button"
+                onclick="mostrarRegistro()">
+
+                Crear cuenta
+
+            </button>
+
+        </div>
+
+
+        <!-- REGISTRO -->
+
+        <div
+            id="registerForm"
+            class="hidden">
+
+            <h2>Crear cuenta</h2>
+
+            <input
+                type="text"
+                id="registerNombre"
+                placeholder="Nombre"
+                autocomplete="given-name"
+            >
+
+            <input
+                type="text"
+                id="registerApellido"
+                placeholder="Apellido"
+                autocomplete="family-name"
+            >
+
+            <input
+                type="email"
+                id="registerCorreo"
+                placeholder="Correo electrónico"
+                autocomplete="email"
+            >
+
+            <input
+                type="password"
+                id="registerPass"
+                placeholder="Contraseña (mínimo 4 caracteres)"
+                autocomplete="new-password"
+            >
+
+            <input
+                type="tel"
+                id="registerTelefono"
+                placeholder="Teléfono (opcional)"
+                autocomplete="tel"
+            >
+
+            <input
+                type="text"
+                id="registerDireccion"
+                placeholder="Dirección (opcional)"
+                autocomplete="street-address"
+            >
+
+            <input
+                type="text"
+                id="registerCiudad"
+                placeholder="Ciudad (opcional)"
+                autocomplete="address-level2"
+            >
+
+            <button
+                type="button"
+                onclick="crearCuenta()">
+                Crear cuenta
+            </button>
+
+            <button
+                type="button"
+                onclick="mostrarLogin()">
+                Ya tengo cuenta
+            </button>
+
+        </div>
+
+
+        <button
+            type="button"
+            onclick="cerrarLogin()">
+
+            Cancelar
+
+        </button>
+
+    </div>
+
+</div>
+
+<!-- MIS PEDIDOS -->
+<div id="misPedidos" class="modal hidden">
+
+    <div class="modal-content pedidos-content">
+
+        <h2>Mis pedidos 📋</h2>
+
+        <div id="listaPedidos">
+
+            <p>Cargando pedidos...</p>
+
+        </div>
+
+        <button
+            type="button"
+            onclick="cerrarMisPedidos()">
+
+            Cerrar
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     TOAST
+========================= -->
+
+<div
+    id="toast"
+    class="toast">
+
+</div>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer class="footer">
+
+    <p>
+        © 2026 Flashop - Proyecto académico SENA
+    </p>
+
+</footer>
+
+
+<!-- =========================
+     DATOS DE MYSQL / FLASK
+========================= -->
+
+<script id="productosBDData" type="application/json">
+    {{ productos | default([]) | tojson }}
+</script>
+
+<script>
+    const productosBD = JSON.parse(
+        document.getElementById("productosBDData").textContent
+    );
+</script>
+
+<!-- ======================================================
+     PERFIL DEL USUARIO
+====================================================== -->
+
+<div id="perfil" class="modal hidden">
+
+    <div class="modal-content perfil-content">
+
+        <h2>Mi perfil 👤</h2>
+
+        <div class="perfil-datos">
+
+            <p>
+                <strong>Nombre:</strong>
+                <span id="perfilNombre"></span>
+            </p>
+
+            <p>
+                <strong>Apellido:</strong>
+                <span id="perfilApellido"></span>
+            </p>
+
+            <p>
+                <strong>Correo:</strong>
+                <span id="perfilCorreo"></span>
+            </p>
+
+        </div>
+
+        <button
+            type="button"
+            onclick="verMisPedidos()">
+            📋 Mis pedidos
+        </button>
+
+        <button
+            type="button"
+            onclick="cerrarSesion()">
+            🚪 Cerrar sesión
+        </button>
+
+        <button
+            type="button"
+            onclick="cerrarPerfil()">
+            Cerrar
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script
+    src="{{ url_for('static', filename='js/script.js') }}">
+</script>
+
+
+</body>
+</html>
